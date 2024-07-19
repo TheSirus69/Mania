@@ -1,5 +1,5 @@
 const { InteractionType, PermissionsBitField, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { STAFF_ROLE_ID, AUDIT_LOG_CHANNEL_ID } = require('../config');  // Import the staff role ID and audit log channel ID from config.js
+const { STAFF_ROLE_ID, AUDIT_LOG_CHANNEL_ID } = require('../config');  
 
 module.exports = {
     name: 'interactionCreate',

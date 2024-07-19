@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord.js');
 const fs = require('fs');
 require('dotenv').config();
-const { STAFF_ROLE_ID } = require('./config');  // Import the staff role ID from config.js
+const { STAFF_ROLE_ID } = require('./config');
 
 const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
