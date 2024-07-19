@@ -1,5 +1,5 @@
 const { InteractionType, PermissionsBitField, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { STAFF_ROLE_ID, AUDIT_LOG_CHANNEL_ID } = require('../config');  
+const { STAFF_ROLE_ID, AUDIT_LOG_CHANNEL_ID } = require('../config');
 
 module.exports = {
     name: 'interactionCreate',
@@ -131,7 +131,8 @@ module.exports = {
                                 .setStyle(ButtonStyle.Primary)
                         );
 
-                    await channel.send({ embeds: [ticketEmbed], components: [actionRow] });
+                    const message = await channel.send({ embeds: [ticketEmbed], components: [actionRow] });
+                    await channel.setTopic(message.id);  // Store the message ID in the channel topic for later retrieval
                     await interaction.reply({ content: `Ticket created: ${channel}`, ephemeral: true });
                 } catch (error) {
                     console.error('Error creating ticket channel:', error);
@@ -200,7 +201,7 @@ module.exports = {
 
                 const channel = interaction.channel;
 
-                const ticketOwner = channel.name.split('-')[1]; // Assumes ticket channel name format is `ticket-username`
+                const ticketOwner = channel.name.split('-')[1];
                 const ticketOwnerUser = interaction.guild.members.cache.find(member => member.user.username === ticketOwner);
 
                 await channel.permissionOverwrites.set([
@@ -218,12 +219,22 @@ module.exports = {
                     }
                 ]);
 
-                const embed = channel.messages.cache.find(msg => msg.embeds.length > 0)?.embeds[0];
+                const messageId = channel.topic;
+                const message = await channel.messages.fetch(messageId);
+
+                const embed = message.embeds[0];
                 if (embed) {
                     const claimedEmbed = EmbedBuilder.from(embed)
                         .setColor(0x00ff00);
 
-                    await channel.send({ embeds: [claimedEmbed], components: [] });
+                    await message.edit({ embeds: [claimedEmbed], components: [
+                        new ActionRowBuilder().addComponents(
+                            new ButtonBuilder()
+                                .setCustomId('close_ticket')
+                                .setLabel('Close Ticket')
+                                .setStyle(ButtonStyle.Danger)
+                        )
+                    ] });
                 }
 
                 await interaction.reply({ content: 'You have claimed this ticket.', ephemeral: true });
