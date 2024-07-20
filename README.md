@@ -1,3 +1,9 @@
-This is my discord bot Mania, I am currently working on this project on the side. I am still kinda new to this development path so bear with me! The repo above is the ticket function for the bot. Feel free to use!
 
-Please let me know of any optimizations / improvements I can make as I am new to discord bot development!
+# Mania - Discord Bot
+
+Mania is a General Multi-purpose Discord bot, this bot it free to use by anyone!
+
+
+Please feel free to help build this bot!
+
+Let me know of any bugs / improvements I can make by making a bug report!
